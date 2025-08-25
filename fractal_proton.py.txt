@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import numpy as np
+
+# 自然单位制常数
+kappa = 1.0 / (np.pi ** 2)           # 真空刚性系数
+df    = np.log(4) / np.log(kappa)    # Hausdorff 维数
+alpha = 1.0 / 127.95                 # 精细结构常数
+
+# 双指数级数
+def mn(lam, beta=0.421, kmax=100):
+    k = np.arange(kmax + 1)
+    return lam * np.sum(kappa ** (-df * k) * np.exp(-beta * k ** 2))
+
+# 主计算
+if __name__ == "__main__":
+    lam = 1.176e-18
+    m_p = 3 * mn(lam) * (1 + alpha / (4 * np.pi ** 2) * kappa ** (-df))
+    r_p = (1 / 197.327) ** 2 / m_p * 1000   # fm
+    print(f"理论质子质量：{m_p:.6f} MeV/c²")
+    print(f"理论质子半径：{r_p:.4f} fm")
